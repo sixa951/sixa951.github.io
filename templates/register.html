@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container-lg">
+ 
+    <div class="row">
+        <form method="post" class="col">
+            {{form.hidden_tag()}}
+            <div class="row mt-2">
+                {{ form.username (class="from-control",placeholder="username")}}
+            </div>
+            <div class="row mt-2">
+                {{ form.password (class="from-control",placeholder="password")}}
+            </div>
+            <div class="row mt-2">
+                {{form.repeat_password(class="form-control",placeholder="repeat password")}}
+            </div>
+            <div class="row mt-2">
+                {{form.phone_number(class="form-control",placeholder="phone number")}}
+            </div>
+            <div class="row mt-2">
+                {{form.gender}}
+                {{form.gender}}
+            </div>
+            <div class="row mt-2">
+                {{form.birthday(class="form-control")}}
+            </div>
+            <div class="row mt-4">
+                {{form.submit(class="btn btn-primary")}}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

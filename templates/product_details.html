@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<img src="/static/images/{{ product ['img'] }}" width="50%">
+<div class="row">
+    სახელი: {{product['name']}}
+</div>
+<div class="row">
+    ფასი: {{product['price']}}
+</div>
+
+<div class="row container-md">
+    <a class="btn btn-primary" href="">buy</a>
+</div>
+{% endblock %}

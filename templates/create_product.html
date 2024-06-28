@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container-lg">
+    <div class="row">
+        {{form.errors}}
+    </div>
+    <div class="row">
+        <form method="post" enctype="multipart/form-data" class="col">
+            {{form.hidden_tag() }}
+            <div class="row m-2">
+                {{ form.img.label.text}}: {{ form.img(accepts="jpg,jpn,png") }}
+            </div>
+            <div class="row mt-2">
+                {{ form.name (class="form-control",placeholder="name")}}
+            </div>
+            <div class="row mt-2">
+                {{ form.price (class="form-control",placeholder="price")}}
+            </div>
+            <div class="row mt-4">
+                {{ form.submit(class="btn btn_primary")}}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

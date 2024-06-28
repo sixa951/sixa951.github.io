@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container">
+    <h1>Shopping Cart</h1>
+    <ul class="list-group" id="cart-list">
+        <!-- Cart items will be rendered here by JavaScript -->
+    </ul>
+    <p id="empty-cart-message">Your cart is empty.</p>
+    <a href="{{ url_for('index') }}" class="btn btn-primary">Continue Shopping</a>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    renderCart();
+});
+
+function renderCart() {
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartList = document.getElementById('cart-list');
+    const emptyCartMessage = document.getElementById('empty-cart-message');
+    cartList.innerHTML = '';
+    if (cartItems.length === 0) {
+        emptyCartMessage.style.display = 'block';
+    } else {
+        emptyCartMessage.style.display = 'none';
+        cartItems.forEach(item => {
+            const cartItem = document.createElement('li');
+            cartItem.className = 'list-group-item';
+            cartItem.innerHTML = `
+                <img src="{{ url_for('static', filename='images/') }}${item.img}" alt="${item.name}" style="width: 50px;">
+                ${item.name} - ${item.price} ლარი
+                <button class="btn btn-danger btn-sm" onclick="removeFromCart(${item.id})">Remove</button>
+            `;
+            cartList.appendChild(cartItem);
+        });
+    }
+}
+
+function removeFromCart(id) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart = cart.filter(item => item.id !== id);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    renderCart();
+}
+</script>
+{% endblock %}

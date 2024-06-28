@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="row">
+        {% for product in products %}
+        <div class="card mx-2 my-2" style="width: 18rem;">
+            <img src="{{ url_for('static', filename='images/' + product['img'] )}}" class="card-img-top"
+                 alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">{{ product['name'] }}</h5>
+                <p class="card-text">{{ product['price'] }} ლარი</p>
+                <a href="/product/{{ product['id'] }}" class="btn btn-primary">Buy</a>
+                <button class="btn btn-success" onclick="addToCart({{ product['id'] }}, '{{ product['name'] }}', '{{ product['price'] }}', '{{ product['img'] }}')">Add to Cart</button>
+                {% if role == "Admin" %}
+                <a href="/delete_product/{{ product['id'] }}" class="btn btn-warning">Delete</a>
+                <a href="/edit_product/{{ product['id'] }}" class="btn btn-info">Edit</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+
+{# ქვემოთ არის ჯავასკრიპტის ფუნქციები, რომლებიც კალათაში დამატებისთვისაა საჭირო #}
+{# არ გინდა ძაან ჩარღმავება დამიჯერე, წესიერად მეც არ მესმის #}
+
+function addToCart(id, name, price, img) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push({ id, name, price, img });
+    localStorage.setItem('cart', JSON.stringify(cart));
+    renderCart();
+    showNotification('Product added to cart!', 'success');
+}
+
+function removeFromCart(id) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart = cart.filter(item => item.id !== id);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    renderCart();
+}
+
+function renderCart() {
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartList = document.getElementById('cart-list');
+    const emptyCartMessage = document.getElementById('empty-cart-message');
+    cartList.innerHTML = '';
+    if (cartItems.length === 0) {
+        emptyCartMessage.style.display = 'block';
+    } else {
+        emptyCartMessage.style.display = 'none';
+        cartItems.forEach(item => {
+            const cartItem = document.createElement('li');
+            cartItem.className = 'list-group-item';
+            cartItem.innerHTML = `
+                <img src="{{ url_for('static', filename='images/') }}${item.img}" alt="${item.name}" style="width: 50px;">
+                ${item.name} - ${item.price} ლარი
+                <button class="btn btn-danger btn-sm" onclick="removeFromCart(${item.id})">Remove</button>
+            `;
+            cartList.appendChild(cartItem);
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderCart();
+});
+</script>
+{% endblock %}

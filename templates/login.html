@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container-lg">
+
+    <div class="row">
+        <form method="post" class="col">
+            {{form.hidden_tag() }}
+            <div class="row mt-2">
+                {{ form.username (class="from-control",placeholder="username")}}
+            </div>
+            <div class="row mt-2">
+                {{ form.password (class="from-control",placeholder="password")}}
+            </div>
+            <div class="row mt-4">
+                {{form.login(class="btn btn-primary")}}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+
